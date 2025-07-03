@@ -15,14 +15,19 @@ public class User {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "user_seq_gen")
+    @SequenceGenerator(
+            name = "user_seq_gen",
+            sequenceName = "user_seq",
+            allocationSize = 1
+    )
     private Long id;
     private String name;
     // @Email(message = "Invalid email format")
     @Column(unique = true)
     private String email;
-    private String password;
-    private String role = "USER";
+   // private String password;
+    private String role ="USER";
 
     public Long getId() {
         return id;
@@ -48,13 +53,7 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getRole() {
         return role;

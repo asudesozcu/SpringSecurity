@@ -3,6 +3,7 @@ package com.example.googlelogin.service;
 import com.example.googlelogin.model.User;
 import com.example.googlelogin.repo.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
@@ -18,11 +19,10 @@ import java.util.Collections;
 import java.util.Map;
 
 @Service
-
+@Primary
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
-    Logger log = LoggerFactory.getLogger(CustomOAuth2UserService.class);
 
 
     public CustomOAuth2UserService(UserRepository userRepository) {
@@ -34,26 +34,26 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest request) {
         OAuth2User oAuth2User = super.loadUser(request);
         Map<String, Object> attributes = oAuth2User.getAttributes();
-        log.info("loaduser called");
 
-        log.info("Google attributes: " + attributes.toString());
-
+        System.out.println("Google attributes: " + attributes);
 
         String email = (String) attributes.get("email");
         String name = (String) attributes.get("name");
+        User user = userRepository.findByEmail(email).orElse(null);
 
-        if (email == null || name == null) {
-            throw new RuntimeException("Google'dan gerekli bilgiler alınamadı: email veya name null.");
+        if (user == null) {
+            System.out.println("user not in db");
+            user = new User();
+            user.setEmail(email);
+            user.setName(name);
+            user.setRole("USER");
+            userRepository.save(user);
         }
 
-        User user = userRepository.findByEmail(email).orElse(new User());
-        user.setEmail(email);
-        user.setName(name);
-        user.setRole("USER");
-        userRepository.save(user);
-
+        String role=user.getRole();
+        System.out.println("ROLE:"  + role);
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_"+role)),
                 attributes,
                 "sub"
         );
