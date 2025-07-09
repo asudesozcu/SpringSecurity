@@ -2,7 +2,7 @@ package com.example.googlelogin.model;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 //import jakarta.validation.constraints.Email;
 
 
@@ -20,8 +20,32 @@ public class User {
             name = "user_seq_gen",
             sequenceName = "user_seq",
             allocationSize = 1
-    )
-    private Long id;
+    )  private Long id;
+    @Column(name = "ACCESS_TOKEN", length = 2048)
+    private String accessToken;
+    @Column(name = "REFRESH_TOKEN", length = 2048)
+
+    private String refreshToken;
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+
+
+
     private String name;
     // @Email(message = "Invalid email format")
     @Column(unique = true)

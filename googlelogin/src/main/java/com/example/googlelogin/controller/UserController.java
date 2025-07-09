@@ -12,6 +12,9 @@ import java.util.Map;
 @RestController // sadece controller olunca html döndürmeni bekliyor. rest controller olunca json bekliyor.
 @RequestMapping("api/user")
 public class UserController {
+    public UserController(){
+        System.out.println("usercontroller");
+    }
 
     @GetMapping("/me")
     public Map<String, Object> currentUser(@AuthenticationPrincipal OAuth2User principal) {
