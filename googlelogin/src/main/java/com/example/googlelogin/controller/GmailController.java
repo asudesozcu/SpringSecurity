@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import oracle.ucp.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -23,8 +24,11 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 public class GmailController {
@@ -38,6 +42,10 @@ public class GmailController {
 
     @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private String clientSecret;
+
+    private Map<String, Instant> lastRequestTime = new ConcurrentHashMap<>();
+    private static final long RATE_LIMIT_SECONDS = 10; // 30 saniyede 1 kez
+
     public GmailController(GmailService gmailService, UserRepository userRepository, TokenRefreshService tokenRefreshService, View error) {
         this.gmailService = gmailService;
         this.userRepository = userRepository;
@@ -53,9 +61,21 @@ public class GmailController {
         if (email == null) {
             return Mono.error(new RuntimeException("Kullanıcı oturumu bulunamadı."));
         }
-
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Veritabanında kullanıcı bulunamadı"));
+
+        Instant now = Instant.now();
+        Instant last = lastRequestTime.get(email);
+
+        if (last != null && now.isBefore(last.plusSeconds(RATE_LIMIT_SECONDS))) {
+            System.out.println("delayed");
+            return Mono.delay(Duration.ofSeconds(5))
+                    .then(gmailService.fetchLatestMails(user, clientId, clientSecret))
+                    .map(ResponseEntity::ok);
+        }
+
+        lastRequestTime.put(email, now);
+
 
         return gmailService
                 .fetchLatestMails(user, clientId, clientSecret)
@@ -67,8 +87,7 @@ public class GmailController {
     }
 
     @GetMapping("/oauth2/callback")
-    public ResponseEntity<String> handleGoogleCallback(@RequestParam("code") String code,
-                                                       HttpServletRequest request) {
+    public ResponseEntity<String> handleGoogleCallback(@RequestParam("code") String code, HttpServletRequest request) {
         System.out.println("Gelen code: " + code);
 
         String redirectUri = "http://localhost:8080/oauth2/callback";

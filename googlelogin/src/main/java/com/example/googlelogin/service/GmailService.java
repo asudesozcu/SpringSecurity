@@ -2,6 +2,10 @@ package com.example.googlelogin.service;
 
 import com.example.googlelogin.model.User;
 import com.example.googlelogin.repo.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.ReactiveRedisOperations;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
@@ -15,11 +19,14 @@ import reactor.core.scheduler.Schedulers;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class GmailService {
+    @Autowired
+    private ReactiveRedisTemplate<String, Object> redisTemplate;
 
     private final WebClient webClient;
     private final TokenRefreshService tokenRefreshService;
@@ -31,16 +38,32 @@ public class GmailService {
         this.userRepository = userRepository;
     }
 
-
     public Mono<List<String>> fetchLatestMails(User user, String clientId, String clientSecret) {
+        String cacheKey = "userıd:" + user.getId();
 
         System.out.println("user.getAccessToken() service :"+user.getAccessToken());
         System.out.println("user.getrefreshedToken() service :"+user.getRefreshToken());
 
-        return getMessageIds(user.getAccessToken(), 5)
+        return redisTemplate.opsForValue().get(cacheKey)
+                .map(obj -> {
+                    if (obj instanceof List<?>) {
+                        return ((List<?>) obj).stream()
+                                .map(String::valueOf)
+                                .toList(); // Convert safely to List<String>
+                    }
+                    return List.<String>of();
+                })
+                .switchIfEmpty(getMessageIds(user.getAccessToken(), 10)
                 .flatMapMany(Flux::fromIterable)
                 .flatMap(id -> getEmailDetails(user.getAccessToken(), id))
                 .collectList()
+                        .flatMap(fetched -> {
+                    System.out.println("get from Gmail Api");
+                    return redisTemplate.opsForValue()
+                            .set(cacheKey, fetched, Duration.ofMinutes(10))
+                            .thenReturn(fetched);
+                })
+            )
                 .onErrorResume(error -> {
                     if (error instanceof WebClientResponseException webClientException &&
                             webClientException.getStatusCode() == HttpStatus.UNAUTHORIZED) {
@@ -91,6 +114,7 @@ public class GmailService {
                             .toList();
                 });
     }
+
 
     private Mono<String> getEmailDetails(String accessToken, String messageId) {
         return webClient.get()
