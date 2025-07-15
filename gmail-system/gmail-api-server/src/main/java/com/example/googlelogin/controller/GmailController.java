@@ -6,26 +6,18 @@ import com.example.googlelogin.repo.UserRepository;
 import com.example.googlelogin.service.GmailService;
 import com.example.googlelogin.service.TokenRefreshService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import oracle.ucp.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.servlet.View;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,10 +46,16 @@ public class GmailController {
     @GetMapping("/emails")
     public Mono<ResponseEntity<List<String>>> getEmails(HttpServletRequest request) {
 
+
+
         String email = (String) request.getSession().getAttribute("email");
         System.out.println("Session ID at /emails: " + request.getSession().getId());
         System.out.println("Email: " + request.getSession().getAttribute("email"));
-
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String name = headerNames.nextElement();
+            System.out.println("HEADER: " + name + " = " + request.getHeader(name));
+        }
         if (email == null) {
             return Mono.error(new RuntimeException("Kullanıcı oturumu bulunamadı."));
         }
@@ -75,8 +73,6 @@ public class GmailController {
         }
 
         lastRequestTime.put(email, now);
-
-
         return gmailService
                 .fetchLatestMails(user, clientId, clientSecret)
                 .map(ResponseEntity::ok)
