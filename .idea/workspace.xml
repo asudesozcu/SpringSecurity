@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7b45a55c-ce42-4df5-932f-95fbc2c67e2f" name="Changes" comment="caching implemented">
+      <change afterPath="$PROJECT_DIR$/gmail-system/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/googlelogin/googlelogin.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/SpringSecurity.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/java/com/example/googlelogin/GoogleloginApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/java/com/example/googlelogin/config/CustomAuthenticationSuccessHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/java/com/example/googlelogin/config/RedisConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/java/com/example/googlelogin/config/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/java/com/example/googlelogin/config/WebClientConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/java/com/example/googlelogin/controller/AdminController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/java/com/example/googlelogin/controller/GmailController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/java/com/example/googlelogin/controller/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/java/com/example/googlelogin/model/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/java/com/example/googlelogin/repo/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/java/com/example/googlelogin/service/CustomOAuth2UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/java/com/example/googlelogin/service/GmailService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/java/com/example/googlelogin/service/TokenRefreshService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/main/resources/credentials.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/googlelogin/src/test/java/com/example/googlelogin/GoogleloginApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;asudesozcu&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/asudesozcu/SpringSecurity.git&quot;,
+    &quot;accountId&quot;: &quot;76c4e2ff-2b0b-48f1-8f7e-4a9dbd5bf2d6&quot;
+  }
+}</component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2zJOmlXoMTod4GHbP76xKr2GkIE" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.GoogleloginApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/sozcu/Documents/IdeaProjects/SpringSecurity/gmail-system",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "oracle"
+    ]
+  }
+}]]></component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.example" />
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.GoogleloginApplication">
+    <configuration name="GoogleloginApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="googlelogin" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="src.main.java.com.example.googlelogin.GoogleloginApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GoogleloginApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="googlelogin" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.googlelogin.GoogleloginApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.419" />
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.419" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7b45a55c-ce42-4df5-932f-95fbc2c67e2f" name="Changes" comment="" />
+      <created>1751445870293</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1751445870293</updated>
+      <workItem from="1751445871358" duration="10310000" />
+      <workItem from="1751490848733" duration="2398000" />
+      <workItem from="1751520628202" duration="8563000" />
+      <workItem from="1751538215530" duration="6254000" />
+      <workItem from="1751606066841" duration="14753000" />
+      <workItem from="1751865546889" duration="13223000" />
+      <workItem from="1751886637437" duration="7711000" />
+      <workItem from="1751895670553" duration="513000" />
+      <workItem from="1751951628586" duration="18293000" />
+      <workItem from="1751997342912" duration="7990000" />
+      <workItem from="1752036001192" duration="13980000" />
+      <workItem from="1752126128771" duration="3236000" />
+      <workItem from="1752151347293" duration="4412000" />
+      <workItem from="1752169987885" duration="1834000" />
+      <workItem from="1752211285532" duration="7275000" />
+      <workItem from="1752224158508" duration="2000" />
+      <workItem from="1752235091069" duration="316000" />
+      <workItem from="1752235418189" duration="3872000" />
+      <workItem from="1752491044050" duration="1012000" />
+      <workItem from="1752492107243" duration="4472000" />
+      <workItem from="1752499605513" duration="631000" />
+    </task>
+    <task id="LOCAL-00001" summary="authorization partially added">
+      <option name="closed" value="true" />
+      <created>1751543098752</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1751543098752</updated>
+    </task>
+    <task id="LOCAL-00002" summary="custom  redirection done">
+      <option name="closed" value="true" />
+      <created>1751545124204</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1751545124204</updated>
+    </task>
+    <task id="LOCAL-00003" summary="bugs fixed">
+      <option name="closed" value="true" />
+      <created>1752060461201</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1752060461201</updated>
+    </task>
+    <task id="LOCAL-00004" summary="token refresh logic implemented">
+      <option name="closed" value="true" />
+      <created>1752060489436</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1752060489436</updated>
+    </task>
+    <task id="LOCAL-00005" summary="caching implemented">
+      <option name="closed" value="true" />
+      <created>1752172685764</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1752172685764</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="authorization partially added" />
+    <MESSAGE value="custom  redirection done" />
+    <MESSAGE value="bugs fixed" />
+    <MESSAGE value="token refresh logic implemented" />
+    <MESSAGE value="caching implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="caching implemented" />
+  </component>
+</project>
