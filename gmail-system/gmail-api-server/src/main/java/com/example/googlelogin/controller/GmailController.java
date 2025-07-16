@@ -4,6 +4,7 @@ package com.example.googlelogin.controller;
 import com.example.googlelogin.model.User;
 import com.example.googlelogin.repo.UserRepository;
 import com.example.googlelogin.service.GmailService;
+import com.example.googlelogin.service.KafkaProducerService;
 import com.example.googlelogin.service.TokenRefreshService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,13 +22,15 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
+import events.EmailFetchedEvent;
 @RestController
 public class GmailController {
 
     private final GmailService gmailService;
     private final UserRepository userRepository;
     private final TokenRefreshService tokenRefreshService;
+    private final KafkaProducerService kafkaProducerService ;
+
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String clientId;
@@ -38,24 +41,15 @@ public class GmailController {
     private Map<String, Instant> lastRequestTime = new ConcurrentHashMap<>();
     private static final long RATE_LIMIT_SECONDS = 10; // 30 saniyede 1 kez
 
-    public GmailController(GmailService gmailService, UserRepository userRepository, TokenRefreshService tokenRefreshService, View error) {
+    public GmailController(GmailService gmailService, UserRepository userRepository, TokenRefreshService tokenRefreshService, View error, KafkaProducerService kafkaProducerService) {
         this.gmailService = gmailService;
         this.userRepository = userRepository;
         this.tokenRefreshService = tokenRefreshService;
+        this.kafkaProducerService = kafkaProducerService;
     }
     @GetMapping("/emails")
     public Mono<ResponseEntity<List<String>>> getEmails(HttpServletRequest request) {
-
-
-
         String email = (String) request.getSession().getAttribute("email");
-        System.out.println("Session ID at /emails: " + request.getSession().getId());
-        System.out.println("Email: " + request.getSession().getAttribute("email"));
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String name = headerNames.nextElement();
-            System.out.println("HEADER: " + name + " = " + request.getHeader(name));
-        }
         if (email == null) {
             return Mono.error(new RuntimeException("Kullanıcı oturumu bulunamadı."));
         }
@@ -73,9 +67,18 @@ public class GmailController {
         }
 
         lastRequestTime.put(email, now);
-        return gmailService
-                .fetchLatestMails(user, clientId, clientSecret)
+        Mono<List<String>> fetchedMails = gmailService.fetchLatestMails(user, clientId, clientSecret);
+
+        return fetchedMails
+                .doOnNext(list -> {
+                    list.forEach(raw -> {
+                        EmailFetchedEvent event = gmailService.parseEmailString(raw);
+                        kafkaProducerService.publish(event);
+                    });
+                })
+
                 .map(ResponseEntity::ok)
+
                 .onErrorResume(WebClientRequestException.class, e -> {
                     System.err.println("WebClient error: " + e.getMessage());
                     return Mono.error(e);

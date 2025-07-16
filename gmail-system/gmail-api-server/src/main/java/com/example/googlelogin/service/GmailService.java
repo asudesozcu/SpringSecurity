@@ -15,8 +15,15 @@ import reactor.core.scheduler.Schedulers;
 
 
 import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import events.EmailFetchedEvent;
 
 @Service
 public class GmailService {
@@ -120,6 +127,7 @@ public class GmailService {
                 .retrieve()
                 .bodyToMono(Map.class)
                 .map(msg -> {
+
                     List<Map<String, String>> headers = (List<Map<String, String>>)
                             ((Map<String, Object>) msg.get("payload")).get("headers");
 
@@ -131,12 +139,77 @@ public class GmailService {
 
                     String from = (headers.stream()
                             .filter(h -> h.get("name").equalsIgnoreCase("From"))
-                            .findFirst().map(h -> h.get("value")).orElse("Unknown")).replace("\\u003C", "<").replace("\\u003C", ">");
-                    ;
+                            .findFirst().map(h -> h.get("value")).orElse("Unknown"));
+                    boolean hasAttachment = ((Map<String, Object>) msg.get("payload"))
+                            .get("mimeType").toString().contains("multipart");
 
-                    return "  Labels: " + labelIds + "| From: " + from +  " | Subject: " + subject;
+                    int sizeEstimate = (int) msg.getOrDefault("sizeEstimate", 0);
+
+                    long internalDate = Long.parseLong(msg.get("internalDate").toString());
+                    LocalDateTime receivedAt = Instant.ofEpochMilli(internalDate)
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDateTime();
+
+                    String emailId = (String) msg.get("id");
+
+                    String snippet = (String) msg.getOrDefault("snippet", "");
+                    return "Email ID: " + emailId +
+                            " | Labels: " + labelIds +
+                            " | From: " + from +
+                            " | Subject: " + subject +
+                            " | Snippet: " + snippet +
+                            " | Received At: " + receivedAt +
+                            " | Has Attachment: " + hasAttachment +
+                            " | Size Estimate: " + sizeEstimate;
                 });
     }
 
+
+    public EmailFetchedEvent parseEmailString(String raw) {
+        EmailFetchedEvent event = new EmailFetchedEvent();
+
+        try {
+            String[] parts = raw.split("\\|");
+
+            for (String part : parts) {
+                part = part.trim();
+
+                if (part.startsWith("Email ID:")) {
+                    event.setEmailId(part.replace("Email ID:", "").trim());
+
+                } else if (part.startsWith("Labels:")) {
+                    String labelsStr = part.replace("Labels:", "").trim()
+                            .replace("[", "").replace("]", "");
+                    List<String> labels = Arrays.stream(labelsStr.split(","))
+                            .map(String::trim).filter(s -> !s.isEmpty()).collect(Collectors.toList());
+                    event.setLabels(labels);
+
+                } else if (part.startsWith("From:")) {
+                    event.setSender(part.replace("From:", "").trim());
+
+                } else if (part.startsWith("Subject:")) {
+                    event.setSubject(part.replace("Subject:", "").trim());
+
+                } else if (part.startsWith("Snippet:")) {
+                    event.setSnippet(part.replace("Snippet:", "").trim());
+
+                } else if (part.startsWith("Received At:")) {
+                    String datetime = part.replace("Received At:", "").trim();
+                    event.setReceivedAt(LocalDateTime.parse(datetime));
+
+                } else if (part.startsWith("Has Attachment:")) {
+                    event.setHasAttachment(Boolean.parseBoolean(part.replace("Has Attachment:", "").trim()));
+
+                } else if (part.startsWith("Size Estimate:")) {
+                    event.setSizeEstimate(Integer.parseInt(part.replace("Size Estimate:", "").trim()));
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println(" Parse error: " + e.getMessage());
+        }
+
+        return event;
+    }
 
 }
