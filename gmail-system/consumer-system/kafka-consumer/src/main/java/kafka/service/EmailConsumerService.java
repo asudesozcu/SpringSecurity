@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailConsumerService {
-    public EmailConsumerService() {
-        System.out.println("✅ EmailConsumerService loaded.");
 
-    }
 
 
     @KafkaListener(
@@ -18,9 +15,8 @@ public class EmailConsumerService {
             containerFactory = "kafkaListenerContainerFactory"
     )    public void consume(EmailFetchedEvent event) {
         System.out.println("Event received: " + event.getSubject());
-        System.out.println(" Subject: " + event.getSubject());
         System.out.println(" From: " + event.getSender());
-        System.out.println(" Received at: " + event.getReceivedAt());
+
 sendFeedback(event);
 
     }
@@ -30,7 +26,7 @@ sendFeedback(event);
 
 
     public void sendFeedback(EmailFetchedEvent event) {
-        System.out.println("🔔 Geri bildirim gönderildi: " + event.getSender() +
+        System.out.println(" Geri bildirim gönderildi: " + event.getSender() +
                 " adresine, '" + event.getSubject() + "' başlıklı e-posta alındı bildirimi yollandı.");
 
         // Örn: REST çağrısı da yapılabilir (başka bir mikroservise)

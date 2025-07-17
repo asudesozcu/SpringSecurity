@@ -13,12 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
-import org.springframework.web.servlet.View;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,7 +39,7 @@ public class GmailController {
     private Map<String, Instant> lastRequestTime = new ConcurrentHashMap<>();
     private static final long RATE_LIMIT_SECONDS = 10; // 30 saniyede 1 kez
 
-    public GmailController(GmailService gmailService, UserRepository userRepository, TokenRefreshService tokenRefreshService, View error, KafkaProducerService kafkaProducerService) {
+    public GmailController(GmailService gmailService, UserRepository userRepository, TokenRefreshService tokenRefreshService,  KafkaProducerService kafkaProducerService) {
         this.gmailService = gmailService;
         this.userRepository = userRepository;
         this.tokenRefreshService = tokenRefreshService;
@@ -70,15 +68,44 @@ public class GmailController {
         Mono<List<String>> fetchedMails = gmailService.fetchLatestMails(user, clientId, clientSecret);
 
         return fetchedMails
+                .map(ResponseEntity::ok)
+                .onErrorResume(WebClientRequestException.class, e -> {
+                    System.err.println("WebClient error: " + e.getMessage());
+                    return Mono.error(e);
+                });
+    }
+
+
+    @GetMapping("/emails/publish")
+    public Mono<ResponseEntity<List<String>>> getandpublishEmails(HttpServletRequest request) {
+        String email = (String) request.getSession().getAttribute("email");
+        if (email == null) {
+            return Mono.error(new RuntimeException("Kullanıcı oturumu bulunamadı."));
+        }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Veritabanında kullanıcı bulunamadı"));
+
+        Instant now = Instant.now();
+        Instant last = lastRequestTime.get(email);
+
+        if (last != null && now.isBefore(last.plusSeconds(RATE_LIMIT_SECONDS))) {
+            System.out.println("delayed");
+            return Mono.delay(Duration.ofSeconds(5))
+                    .then(gmailService.fetchLatestMails(user, clientId, clientSecret))
+                    .map(ResponseEntity::ok);
+        }
+
+        lastRequestTime.put(email, now);
+        Mono<List<String>> fetchedMails = gmailService.fetchLatestMails(user, clientId, clientSecret);
+
+        return fetchedMails
                 .doOnNext(list -> {
                     list.forEach(raw -> {
                         EmailFetchedEvent event = gmailService.parseEmailString(raw);
                         kafkaProducerService.publish(event);
                     });
                 })
-
                 .map(ResponseEntity::ok)
-
                 .onErrorResume(WebClientRequestException.class, e -> {
                     System.err.println("WebClient error: " + e.getMessage());
                     return Mono.error(e);

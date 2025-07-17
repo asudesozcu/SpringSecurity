@@ -57,7 +57,6 @@ public class KafkaConsumerConfig {
     public ConcurrentKafkaListenerContainerFactory<String, EmailFetchedEvent> kafkaListenerContainerFactory(
             ConsumerFactory<String, EmailFetchedEvent> consumerFactory) {
 
-        System.out.println("✅ kafkaListenerContainerFactory loaded");
 
         ConcurrentKafkaListenerContainerFactory<String, EmailFetchedEvent> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();

@@ -1,0 +1,37 @@
+package grpc.controller;
+
+
+import common.EmailRequest;
+import common.EmailResponse;
+import common.EmailServiceGrpc;
+import grpc.service.GrpcConsumerService;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+@RestController
+public class GrpcConsumerController {
+
+    private final GrpcConsumerService grpcConsumerService;
+
+    public GrpcConsumerController(GrpcConsumerService grpcConsumerService) {
+        this.grpcConsumerService = grpcConsumerService;
+    }
+
+    @GetMapping("/fetch-mails")
+    public List<String> fetchEmails(@RequestParam("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new RuntimeException("Authorization header eksik");
+        }
+
+        String token = authHeader.substring(7);
+        return grpcConsumerService.fetchEmails(token);
+    }
+
+}

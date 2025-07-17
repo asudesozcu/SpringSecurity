@@ -15,13 +15,12 @@ public class KafkaProducerService {
 
     public void publish(EmailFetchedEvent event) {
         kafkaTemplate.send(TOPIC, event)
-                .thenAccept(result -> System.out.println("✅ Sent: " + event.getSubject()))
+                .thenAccept(result -> System.out.println("Sent: " + event.getSubject()))
                 .exceptionally(ex -> {
-                    System.err.println("❌ Kafka send failed: " + ex.getMessage());
+                    System.err.println(" Kafka send failed: " + ex.getMessage());
                     return null;
                 });
 
-        System.out.println("✅ Event published (async): " + event.getSubject());
     }
 
 
