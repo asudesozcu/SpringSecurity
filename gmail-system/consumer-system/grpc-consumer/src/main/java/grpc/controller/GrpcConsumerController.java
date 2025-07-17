@@ -25,12 +25,12 @@ public class GrpcConsumerController {
     }
 
     @GetMapping("/fetch-mails")
-    public List<String> fetchEmails(@RequestParam("Authorization") String authHeader) {
+    public List<String> fetchEmails(@RequestHeader("Authorization") String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new RuntimeException("Authorization header eksik");
+            throw new RuntimeException("Authorization header eksik veya hatalı");
         }
 
-        String token = authHeader.substring(7);
+        String token = authHeader.substring(7); // "Bearer " sonrası kısmı al
         return grpcConsumerService.fetchEmails(token);
     }
 
