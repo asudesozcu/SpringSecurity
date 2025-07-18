@@ -1,0 +1,15 @@
+syntax = "proto3";
+option java_package = "common";
+option java_multiple_files = true;//Her message ve service için ayrı .java dosyası üretir
+
+service EmailService {
+  rpc FetchLatestEmails (EmailRequest) returns (EmailResponse);
+}
+message EmailRequest {
+  string email = 1;
+}
+
+
+message EmailResponse {
+  repeated  string fetchedEmails = 1; //list<string>
+}
