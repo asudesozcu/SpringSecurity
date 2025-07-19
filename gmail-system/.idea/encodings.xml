@@ -5,6 +5,7 @@
     <file url="file://$PROJECT_DIR$/consumer-system/grpc-consumer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/consumer-system/kafka-consumer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gmail-api-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/graphql-layer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/shared-library/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />

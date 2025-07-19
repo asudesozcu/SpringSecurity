@@ -1,19 +1,16 @@
 package kafka.service;
 
 import org.springframework.kafka.annotation.KafkaListener;
-import events.EmailFetchedEvent;
+import dto.EmailDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailConsumerService {
-
-
-
     @KafkaListener(
             topics = "email-events",
             groupId = "${spring.kafka.consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory"
-    )    public void consume(EmailFetchedEvent event) {
+    )    public void consume(EmailDto event) {
         System.out.println("Event received: " + event.getSubject());
         System.out.println(" From: " + event.getSender());
 
@@ -22,10 +19,7 @@ sendFeedback(event);
     }
 
 
-
-
-
-    public void sendFeedback(EmailFetchedEvent event) {
+    public void sendFeedback(EmailDto event) {
         System.out.println(" Geri bildirim gönderildi: " + event.getSender() +
                 " adresine, '" + event.getSubject() + "' başlıklı e-posta alındı bildirimi yollandı.");
 

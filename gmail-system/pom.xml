@@ -15,6 +15,7 @@
         <module>consumer-system/grpc-consumer</module>
         <module>consumer-system/kafka-consumer</module>
         <module>shared-library</module>
+        <module>graphql-layer</module>
 
     </modules>
 

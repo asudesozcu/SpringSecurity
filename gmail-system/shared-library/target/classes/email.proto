@@ -6,9 +6,8 @@ service EmailService {
   rpc FetchLatestEmails (EmailRequest) returns (EmailResponse);
 }
 message EmailRequest {
-  string email = 1;
-}
 
+}
 
 message EmailResponse {
   repeated  string fetchedEmails = 1; //list<string>

@@ -1,11 +1,11 @@
 package com.example.googlelogin.config;
 
+import dto.EmailDto;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import events.EmailFetchedEvent;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -22,7 +22,7 @@ public class KafkaProducerConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String kafkaAddress;
     @Bean
-    public ProducerFactory<String, EmailFetchedEvent> producerFactory() {
+    public ProducerFactory<String, EmailDto> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -31,7 +31,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, EmailFetchedEvent> kafkaTemplate() {
+    public KafkaTemplate<String, EmailDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 

@@ -20,7 +20,9 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import events.EmailFetchedEvent;
+import java.util.stream.Collectors;
+
+import dto.EmailDto;
 @RestController
 public class GmailController {
 
@@ -46,11 +48,12 @@ public class GmailController {
         this.kafkaProducerService = kafkaProducerService;
     }
     @GetMapping("/emails")
-    public Mono<ResponseEntity<List<String>>> getEmails(HttpServletRequest request) {
+    public Mono<ResponseEntity<List<EmailDto>>> getEmails(HttpServletRequest request) {
         String email = (String) request.getSession().getAttribute("email");
         if (email == null) {
             return Mono.error(new RuntimeException("Kullanıcı oturumu bulunamadı."));
         }
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Veritabanında kullanıcı bulunamadı"));
 
@@ -61,20 +64,28 @@ public class GmailController {
             System.out.println("delayed");
             return Mono.delay(Duration.ofSeconds(5))
                     .then(gmailService.fetchLatestMails(user, clientId, clientSecret))
-                    .map(ResponseEntity::ok);
+                    .map(rawList -> {
+                        List<EmailDto> dtoList = rawList.stream()
+                                .map(gmailService::parseEmailString)
+                                .collect(Collectors.toList());
+                        return ResponseEntity.ok(dtoList);
+                    });
         }
 
         lastRequestTime.put(email, now);
-        Mono<List<String>> fetchedMails = gmailService.fetchLatestMails(user, clientId, clientSecret);
 
-        return fetchedMails
-                .map(ResponseEntity::ok)
+        return gmailService.fetchLatestMails(user, clientId, clientSecret)
+                .map(rawList -> {
+                    List<EmailDto> dtoList = rawList.stream()
+                            .map(gmailService::parseEmailString)
+                            .collect(Collectors.toList());
+                    return ResponseEntity.ok(dtoList);
+                })
                 .onErrorResume(WebClientRequestException.class, e -> {
                     System.err.println("WebClient error: " + e.getMessage());
                     return Mono.error(e);
                 });
     }
-
 
     @GetMapping("/emails/publish")
     public Mono<ResponseEntity<List<String>>> getandpublishEmails(HttpServletRequest request) {
@@ -101,7 +112,7 @@ public class GmailController {
         return fetchedMails
                 .doOnNext(list -> {
                     list.forEach(raw -> {
-                        EmailFetchedEvent event = gmailService.parseEmailString(raw);
+                        EmailDto event = gmailService.parseEmailString(raw);
                         kafkaProducerService.publish(event);
                     });
                 })

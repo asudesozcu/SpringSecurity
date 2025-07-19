@@ -34,11 +34,10 @@ public final class Email {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\013email.proto\"\035\n\014EmailRequest\022\r\n\005email\030\001" +
-      " \001(\t\"&\n\rEmailResponse\022\025\n\rfetchedEmails\030\001" +
-      " \003(\t2B\n\014EmailService\0222\n\021FetchLatestEmail" +
-      "s\022\r.EmailRequest\032\016.EmailResponseB\n\n\006comm" +
-      "onP\001b\006proto3"
+      "\n\013email.proto\"\016\n\014EmailRequest\"&\n\rEmailRe" +
+      "sponse\022\025\n\rfetchedEmails\030\001 \003(\t2B\n\014EmailSe" +
+      "rvice\0222\n\021FetchLatestEmails\022\r.EmailReques" +
+      "t\032\016.EmailResponseB\n\n\006commonP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -49,7 +48,7 @@ public final class Email {
     internal_static_EmailRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_EmailRequest_descriptor,
-        new java.lang.String[] { "Email", });
+        new java.lang.String[] { });
     internal_static_EmailResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_EmailResponse_fieldAccessorTable = new

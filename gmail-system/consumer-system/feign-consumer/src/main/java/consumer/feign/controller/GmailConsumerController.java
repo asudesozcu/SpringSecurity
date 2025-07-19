@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
-
+import dto.EmailDto;
 @RestController
 public class GmailConsumerController {
 
@@ -19,10 +19,10 @@ public class GmailConsumerController {
     }
 
     @GetMapping("/consume-emails")
-    public ResponseEntity<List<String>> getEmails(@CookieValue("JSESSIONID") String sessionId) {
+    public ResponseEntity<List<EmailDto>> getEmails(@CookieValue("JSESSIONID") String sessionId) {
         String cookieHeader = "JSESSIONID=" + sessionId;
         System.out.println("COOKIE: " + cookieHeader);
-        List<String>  emails = gmailApiClient.getEmails(cookieHeader);
+        List<EmailDto>  emails = gmailApiClient.getEmails(cookieHeader);
         return ResponseEntity.ok(emails);
 
     }

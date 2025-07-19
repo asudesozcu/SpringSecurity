@@ -1,15 +1,20 @@
-package events;
+package dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class EmailFetchedEvent {
-    private String emailId;            // Gmail'den gelen benzersiz ID
-    private String subject;            // E-posta başlığı
-    private String sender;             // Kimden geldi
-    private String snippet;            // İlk birkaç satır
-    private LocalDateTime receivedAt;  // Ne zaman alındı
-    private List<String> labels;       // INBOX, UNREAD vs.
-    private boolean hasAttachment;     // Ek var mı
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+
+public class EmailDto {
+    private String emailId;
+    private String subject;
+    private String sender;
+    private String snippet;
+    private LocalDateTime receivedAt;
+    private List<String> labels;
+    private boolean hasAttachment;
     private int sizeEstimate;
 
     public String getEmailId() {
@@ -18,7 +23,7 @@ public class EmailFetchedEvent {
 
     @Override
     public String toString() {
-        return "EmailFetchedEvent{" +
+        return "EmailDto{" +
                 "emailId='" + emailId + '\'' +
                 ", subject='" + subject + '\'' +
                 ", sender='" + sender + '\'' +
@@ -90,7 +95,7 @@ public class EmailFetchedEvent {
         this.sizeEstimate = sizeEstimate;
     }
 
-    public EmailFetchedEvent(String emailId, String subject, String sender, String snippet, LocalDateTime receivedAt, List<String> labels, boolean hasAttachment, int sizeEstimate) {
+    public EmailDto(String emailId, String subject, String sender, String snippet, LocalDateTime receivedAt, List<String> labels, boolean hasAttachment, int sizeEstimate) {
         this.emailId = emailId;
         this.subject = subject;
         this.sender = sender;
@@ -101,6 +106,6 @@ public class EmailFetchedEvent {
         this.sizeEstimate = sizeEstimate;
     }
 //kafka için gerekli belki
-    public EmailFetchedEvent() {}
+    public EmailDto() {}
 
 }

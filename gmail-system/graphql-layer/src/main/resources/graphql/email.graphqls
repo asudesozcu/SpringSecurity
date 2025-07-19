@@ -1,0 +1,20 @@
+enum CommunicationProtocol {
+  REST
+  GRPC
+  KAFKA
+}
+type Query {
+  getEmails(protocol: CommunicationProtocol!): [EmailDto]
+}
+
+type EmailDto {
+  emailId: String
+  subject: String
+  from: String
+  snippet: String
+  receivedAt: String  # ISO format (e.g. 2023-07-17T20:00:00)
+  labelIds: [String]
+  hasAttachment: Boolean
+  sizeEstimate: Int
+}
+

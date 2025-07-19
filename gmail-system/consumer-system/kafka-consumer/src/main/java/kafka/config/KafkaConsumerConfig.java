@@ -3,7 +3,7 @@ package kafka.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import events.EmailFetchedEvent;
+import dto.EmailDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,10 +38,10 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, EmailFetchedEvent> consumerFactory(ObjectMapper kafkaObjectMapper) {
-        JsonDeserializer<EmailFetchedEvent> deserializer =
-                new JsonDeserializer<>(EmailFetchedEvent.class, kafkaObjectMapper, false);
-        deserializer.addTrustedPackages("events");
+    public ConsumerFactory<String, EmailDto> consumerFactory(ObjectMapper kafkaObjectMapper) {
+        JsonDeserializer<EmailDto> deserializer =
+                new JsonDeserializer<>(EmailDto.class, kafkaObjectMapper, false);
+        deserializer.addTrustedPackages("dto");
 
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
@@ -54,11 +54,11 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, EmailFetchedEvent> kafkaListenerContainerFactory(
-            ConsumerFactory<String, EmailFetchedEvent> consumerFactory) {
+    public ConcurrentKafkaListenerContainerFactory<String, EmailDto> kafkaListenerContainerFactory(
+            ConsumerFactory<String, EmailDto> consumerFactory) {
 
 
-        ConcurrentKafkaListenerContainerFactory<String, EmailFetchedEvent> factory =
+        ConcurrentKafkaListenerContainerFactory<String, EmailDto> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         return factory;

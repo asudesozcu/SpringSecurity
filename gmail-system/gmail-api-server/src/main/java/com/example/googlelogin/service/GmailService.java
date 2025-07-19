@@ -2,6 +2,7 @@ package com.example.googlelogin.service;
 
 import com.example.googlelogin.model.User;
 import com.example.googlelogin.repo.UserRepository;
+import dto.EmailDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import events.EmailFetchedEvent;
 
 @Service
 public class GmailService {
@@ -165,8 +164,8 @@ public class GmailService {
     }
 
 
-    public EmailFetchedEvent parseEmailString(String raw) {
-        EmailFetchedEvent event = new EmailFetchedEvent();
+    public EmailDto parseEmailString(String raw) {
+        EmailDto event = new EmailDto();
 
         try {
             String[] parts = raw.split("\\|");

@@ -7,16 +7,4 @@ package common;
 public interface EmailRequestOrBuilder extends
     // @@protoc_insertion_point(interface_extends:EmailRequest)
     com.google.protobuf.MessageOrBuilder {
-
-  /**
-   * <code>string email = 1;</code>
-   * @return The email.
-   */
-  java.lang.String getEmail();
-  /**
-   * <code>string email = 1;</code>
-   * @return The bytes for email.
-   */
-  com.google.protobuf.ByteString
-      getEmailBytes();
 }

@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="graphql-layer" />
         <module name="feign-consumer" />
         <module name="grpc-consumer" />
         <module name="kafka-consumer" />
@@ -18,6 +19,7 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="gmail-api-server" />
       </profile>
@@ -27,6 +29,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="feign-consumer" options="-parameters" />
       <module name="gmail-api-server" options="-parameters" />
+      <module name="graphql-layer" options="-parameters" />
       <module name="grpc-consumer" options="-parameters" />
       <module name="kafka-consumer" options="-parameters" />
       <module name="shared-library" options="-parameters" />
