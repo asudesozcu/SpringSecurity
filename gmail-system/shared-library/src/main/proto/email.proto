@@ -10,5 +10,17 @@ message EmailRequest {
 }
 
 message EmailResponse {
-  repeated  string fetchedEmails = 1; //list<string>
+  repeated  EmailDtoProto  fetchedEmails = 1; //list<emildto>
 }
+
+message EmailDtoProto {
+  string emailId = 1;
+  string subject = 2;
+  string sender = 3;
+  string snippet = 4;
+  string receivedAt = 5;
+  repeated string labels = 6;
+  bool hasAttachment = 7;
+  int32 sizeEstimate = 8;
+}
+

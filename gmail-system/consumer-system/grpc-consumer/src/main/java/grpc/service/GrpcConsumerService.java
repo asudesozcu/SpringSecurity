@@ -1,5 +1,6 @@
 package grpc.service;
 
+import dto.EmailDto;
 import common.EmailServiceGrpc;
 import io.grpc.ClientInterceptor;
 import io.grpc.ManagedChannel;
@@ -12,6 +13,8 @@ import common.EmailRequest;
 import common.EmailResponse;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class GrpcConsumerService {
 
@@ -21,7 +24,7 @@ public class GrpcConsumerService {
         this.stub = stub;
     }
 
-    public List<String> fetchEmails(String token) {
+    public List<EmailDto> fetchEmails(String token) {
         Metadata metadata = new Metadata();
         metadata.put(
                 Metadata.Key.of("Authorization", Metadata.ASCII_STRING_MARSHALLER),
@@ -37,7 +40,7 @@ public class GrpcConsumerService {
         EmailRequest request = EmailRequest.newBuilder().build();
         EmailResponse response = stubWithAuth.fetchLatestEmails(request);
 
-        return response.getFetchedEmailsList();
+        return response.getFetchedEmailsList().stream().map(dto.EmailDto::fromProto).collect(Collectors.toList());
     }
 
 }

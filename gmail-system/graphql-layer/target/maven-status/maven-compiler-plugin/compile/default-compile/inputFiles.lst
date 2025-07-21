@@ -1,0 +1,7 @@
+C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\graphql-layer\src\main\java\com\gmail\system\config\HttpServletRequestInterceptor.java
+C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\graphql-layer\src\main\java\com\gmail\system\config\WebConfig.java
+C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\graphql-layer\src\main\java\com\gmail\system\controller\EmailGraphQLController.java
+C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\graphql-layer\src\main\java\com\gmail\system\GraphqlLayerApplication.java
+C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\graphql-layer\src\main\java\com\gmail\system\service\FeignEmailClient.java
+C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\graphql-layer\src\main\java\com\gmail\system\service\GrpcEmailClient.java
+C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\graphql-layer\src\main\java\com\gmail\system\service\KafkaEmailService.java

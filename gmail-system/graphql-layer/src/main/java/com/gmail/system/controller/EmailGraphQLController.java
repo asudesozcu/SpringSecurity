@@ -2,14 +2,11 @@ package com.gmail.system.controller;
 
 import com.gmail.system.service.FeignEmailClient;
 import com.gmail.system.service.GrpcEmailClient;
-import com.gmail.system.service.KafkaEmailService;
 import dto.EmailDto;
 
-import dto.enums;
-import graphql.GraphQLContext;
+import dto.enums.CommunicationProtocol;
 import graphql.schema.DataFetchingEnvironment;
 import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.ContextValue;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
@@ -33,7 +30,7 @@ public class EmailGraphQLController {
 
 
     @QueryMapping
-    public List<EmailDto> getEmails(@Argument enums.CommunicationProtocol protocol,
+    public List<EmailDto> getEmails(@Argument CommunicationProtocol protocol,
                                     DataFetchingEnvironment environment) {
         System.out.println("içerdeyiz");
         HttpServletRequest request = environment.getGraphQlContext().get("javax.servlet.http.HttpServletRequest");
@@ -42,24 +39,25 @@ public class EmailGraphQLController {
             throw new IllegalStateException("HttpServletRequest not found in context");
         }
 
-// Artık güvenle kullanabilirsin
-        String cookieHeader = request.getHeader("Cookie");
-        System.out.println(cookieHeader);
+        String authHeader = request.getHeader("Authorization");
+        System.out.println("authHeader: " + authHeader);
+        String token = authHeader.substring(7); // "Bearer " sonrası kısmı al
+        System.out.println("token: " + token);
+
 
         if (request == null) {
             throw new IllegalStateException("HttpServletRequest not found in context");
         }
 
 
-
         switch (protocol) {
             case GRPC:
-                String authHeader = request.getHeader("Authorization");
+               System.out.println("authHeader: " + authHeader);
                 if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                     throw new RuntimeException("Missing or invalid Authorization header for gRPC source");
                 }
-                String token = authHeader.substring("Bearer ".length());
-                return grpcEmailClient.fetchEmails(token);
+
+                return grpcEmailClient.fetchEmails(authHeader);
 
             case REST:
                 String cookie = request.getHeader("Cookie");

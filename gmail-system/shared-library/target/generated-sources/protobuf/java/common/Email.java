@@ -25,6 +25,11 @@ public final class Email {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_EmailResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_EmailDtoProto_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_EmailDtoProto_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -34,10 +39,15 @@ public final class Email {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\013email.proto\"\016\n\014EmailRequest\"&\n\rEmailRe" +
-      "sponse\022\025\n\rfetchedEmails\030\001 \003(\t2B\n\014EmailSe" +
-      "rvice\0222\n\021FetchLatestEmails\022\r.EmailReques" +
-      "t\032\016.EmailResponseB\n\n\006commonP\001b\006proto3"
+      "\n\013email.proto\"\016\n\014EmailRequest\"6\n\rEmailRe" +
+      "sponse\022%\n\rfetchedEmails\030\001 \003(\0132\016.EmailDto" +
+      "Proto\"\243\001\n\rEmailDtoProto\022\017\n\007emailId\030\001 \001(\t" +
+      "\022\017\n\007subject\030\002 \001(\t\022\016\n\006sender\030\003 \001(\t\022\017\n\007sni" +
+      "ppet\030\004 \001(\t\022\022\n\nreceivedAt\030\005 \001(\t\022\016\n\006labels" +
+      "\030\006 \003(\t\022\025\n\rhasAttachment\030\007 \001(\010\022\024\n\014sizeEst" +
+      "imate\030\010 \001(\0052B\n\014EmailService\0222\n\021FetchLate" +
+      "stEmails\022\r.EmailRequest\032\016.EmailResponseB" +
+      "\n\n\006commonP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -55,6 +65,12 @@ public final class Email {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_EmailResponse_descriptor,
         new java.lang.String[] { "FetchedEmails", });
+    internal_static_EmailDtoProto_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_EmailDtoProto_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_EmailDtoProto_descriptor,
+        new java.lang.String[] { "EmailId", "Subject", "Sender", "Snippet", "ReceivedAt", "Labels", "HasAttachment", "SizeEstimate", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

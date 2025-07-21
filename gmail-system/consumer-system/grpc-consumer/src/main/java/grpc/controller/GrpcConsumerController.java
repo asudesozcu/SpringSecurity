@@ -4,6 +4,7 @@ package grpc.controller;
 import common.EmailRequest;
 import common.EmailResponse;
 import common.EmailServiceGrpc;
+import dto.EmailDto;
 import grpc.service.GrpcConsumerService;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -25,7 +26,8 @@ public class GrpcConsumerController {
     }
 
     @GetMapping("/fetch-mails")
-    public List<String> fetchEmails(@RequestHeader("Authorization") String authHeader) {
+    public List<EmailDto> fetchEmails(@RequestHeader("Authorization") String authHeader) {
+        System.out.println("GRPC CONSUMER: "+ authHeader);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new RuntimeException("Authorization header eksik veya hatalı");
         }

@@ -17,8 +17,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private EmailResponse() {
-    fetchedEmails_ =
-        com.google.protobuf.LazyStringArrayList.emptyList();
+    fetchedEmails_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -43,55 +42,63 @@ private static final long serialVersionUID = 0L;
 
   public static final int FETCHEDEMAILS_FIELD_NUMBER = 1;
   @SuppressWarnings("serial")
-  private com.google.protobuf.LazyStringArrayList fetchedEmails_ =
-      com.google.protobuf.LazyStringArrayList.emptyList();
+  private java.util.List<common.EmailDtoProto> fetchedEmails_;
   /**
    * <pre>
-   *list&lt;string&gt;
+   *list&lt;emildto&gt;
    * </pre>
    *
-   * <code>repeated string fetchedEmails = 1;</code>
-   * @return A list containing the fetchedEmails.
+   * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
    */
-  public com.google.protobuf.ProtocolStringList
-      getFetchedEmailsList() {
+  @java.lang.Override
+  public java.util.List<common.EmailDtoProto> getFetchedEmailsList() {
     return fetchedEmails_;
   }
   /**
    * <pre>
-   *list&lt;string&gt;
+   *list&lt;emildto&gt;
    * </pre>
    *
-   * <code>repeated string fetchedEmails = 1;</code>
-   * @return The count of fetchedEmails.
+   * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
    */
+  @java.lang.Override
+  public java.util.List<? extends common.EmailDtoProtoOrBuilder> 
+      getFetchedEmailsOrBuilderList() {
+    return fetchedEmails_;
+  }
+  /**
+   * <pre>
+   *list&lt;emildto&gt;
+   * </pre>
+   *
+   * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
+   */
+  @java.lang.Override
   public int getFetchedEmailsCount() {
     return fetchedEmails_.size();
   }
   /**
    * <pre>
-   *list&lt;string&gt;
+   *list&lt;emildto&gt;
    * </pre>
    *
-   * <code>repeated string fetchedEmails = 1;</code>
-   * @param index The index of the element to return.
-   * @return The fetchedEmails at the given index.
+   * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
    */
-  public java.lang.String getFetchedEmails(int index) {
+  @java.lang.Override
+  public common.EmailDtoProto getFetchedEmails(int index) {
     return fetchedEmails_.get(index);
   }
   /**
    * <pre>
-   *list&lt;string&gt;
+   *list&lt;emildto&gt;
    * </pre>
    *
-   * <code>repeated string fetchedEmails = 1;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the fetchedEmails at the given index.
+   * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
    */
-  public com.google.protobuf.ByteString
-      getFetchedEmailsBytes(int index) {
-    return fetchedEmails_.getByteString(index);
+  @java.lang.Override
+  public common.EmailDtoProtoOrBuilder getFetchedEmailsOrBuilder(
+      int index) {
+    return fetchedEmails_.get(index);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -109,7 +116,7 @@ private static final long serialVersionUID = 0L;
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     for (int i = 0; i < fetchedEmails_.size(); i++) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, fetchedEmails_.getRaw(i));
+      output.writeMessage(1, fetchedEmails_.get(i));
     }
     getUnknownFields().writeTo(output);
   }
@@ -120,13 +127,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    {
-      int dataSize = 0;
-      for (int i = 0; i < fetchedEmails_.size(); i++) {
-        dataSize += computeStringSizeNoTag(fetchedEmails_.getRaw(i));
-      }
-      size += dataSize;
-      size += 1 * getFetchedEmailsList().size();
+    for (int i = 0; i < fetchedEmails_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(1, fetchedEmails_.get(i));
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -291,8 +294,13 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      fetchedEmails_ =
-          com.google.protobuf.LazyStringArrayList.emptyList();
+      if (fetchedEmailsBuilder_ == null) {
+        fetchedEmails_ = java.util.Collections.emptyList();
+      } else {
+        fetchedEmails_ = null;
+        fetchedEmailsBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -319,17 +327,26 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public common.EmailResponse buildPartial() {
       common.EmailResponse result = new common.EmailResponse(this);
+      buildPartialRepeatedFields(result);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
+    private void buildPartialRepeatedFields(common.EmailResponse result) {
+      if (fetchedEmailsBuilder_ == null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
+          fetchedEmails_ = java.util.Collections.unmodifiableList(fetchedEmails_);
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.fetchedEmails_ = fetchedEmails_;
+      } else {
+        result.fetchedEmails_ = fetchedEmailsBuilder_.build();
+      }
+    }
+
     private void buildPartial0(common.EmailResponse result) {
       int from_bitField0_ = bitField0_;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        fetchedEmails_.makeImmutable();
-        result.fetchedEmails_ = fetchedEmails_;
-      }
     }
 
     @java.lang.Override
@@ -376,15 +393,31 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(common.EmailResponse other) {
       if (other == common.EmailResponse.getDefaultInstance()) return this;
-      if (!other.fetchedEmails_.isEmpty()) {
-        if (fetchedEmails_.isEmpty()) {
-          fetchedEmails_ = other.fetchedEmails_;
-          bitField0_ |= 0x00000001;
-        } else {
-          ensureFetchedEmailsIsMutable();
-          fetchedEmails_.addAll(other.fetchedEmails_);
+      if (fetchedEmailsBuilder_ == null) {
+        if (!other.fetchedEmails_.isEmpty()) {
+          if (fetchedEmails_.isEmpty()) {
+            fetchedEmails_ = other.fetchedEmails_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureFetchedEmailsIsMutable();
+            fetchedEmails_.addAll(other.fetchedEmails_);
+          }
+          onChanged();
         }
-        onChanged();
+      } else {
+        if (!other.fetchedEmails_.isEmpty()) {
+          if (fetchedEmailsBuilder_.isEmpty()) {
+            fetchedEmailsBuilder_.dispose();
+            fetchedEmailsBuilder_ = null;
+            fetchedEmails_ = other.fetchedEmails_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            fetchedEmailsBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getFetchedEmailsFieldBuilder() : null;
+          } else {
+            fetchedEmailsBuilder_.addAllMessages(other.fetchedEmails_);
+          }
+        }
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -413,9 +446,16 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-              ensureFetchedEmailsIsMutable();
-              fetchedEmails_.add(s);
+              common.EmailDtoProto m =
+                  input.readMessage(
+                      common.EmailDtoProto.parser(),
+                      extensionRegistry);
+              if (fetchedEmailsBuilder_ == null) {
+                ensureFetchedEmailsIsMutable();
+                fetchedEmails_.add(m);
+              } else {
+                fetchedEmailsBuilder_.addMessage(m);
+              }
               break;
             } // case 10
             default: {
@@ -435,151 +475,316 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private com.google.protobuf.LazyStringArrayList fetchedEmails_ =
-        com.google.protobuf.LazyStringArrayList.emptyList();
+    private java.util.List<common.EmailDtoProto> fetchedEmails_ =
+      java.util.Collections.emptyList();
     private void ensureFetchedEmailsIsMutable() {
-      if (!fetchedEmails_.isModifiable()) {
-        fetchedEmails_ = new com.google.protobuf.LazyStringArrayList(fetchedEmails_);
-      }
-      bitField0_ |= 0x00000001;
+      if (!((bitField0_ & 0x00000001) != 0)) {
+        fetchedEmails_ = new java.util.ArrayList<common.EmailDtoProto>(fetchedEmails_);
+        bitField0_ |= 0x00000001;
+       }
     }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        common.EmailDtoProto, common.EmailDtoProto.Builder, common.EmailDtoProtoOrBuilder> fetchedEmailsBuilder_;
+
     /**
      * <pre>
-     *list&lt;string&gt;
+     *list&lt;emildto&gt;
      * </pre>
      *
-     * <code>repeated string fetchedEmails = 1;</code>
-     * @return A list containing the fetchedEmails.
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
      */
-    public com.google.protobuf.ProtocolStringList
-        getFetchedEmailsList() {
-      fetchedEmails_.makeImmutable();
-      return fetchedEmails_;
+    public java.util.List<common.EmailDtoProto> getFetchedEmailsList() {
+      if (fetchedEmailsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(fetchedEmails_);
+      } else {
+        return fetchedEmailsBuilder_.getMessageList();
+      }
     }
     /**
      * <pre>
-     *list&lt;string&gt;
+     *list&lt;emildto&gt;
      * </pre>
      *
-     * <code>repeated string fetchedEmails = 1;</code>
-     * @return The count of fetchedEmails.
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
      */
     public int getFetchedEmailsCount() {
-      return fetchedEmails_.size();
+      if (fetchedEmailsBuilder_ == null) {
+        return fetchedEmails_.size();
+      } else {
+        return fetchedEmailsBuilder_.getCount();
+      }
     }
     /**
      * <pre>
-     *list&lt;string&gt;
+     *list&lt;emildto&gt;
      * </pre>
      *
-     * <code>repeated string fetchedEmails = 1;</code>
-     * @param index The index of the element to return.
-     * @return The fetchedEmails at the given index.
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
      */
-    public java.lang.String getFetchedEmails(int index) {
-      return fetchedEmails_.get(index);
+    public common.EmailDtoProto getFetchedEmails(int index) {
+      if (fetchedEmailsBuilder_ == null) {
+        return fetchedEmails_.get(index);
+      } else {
+        return fetchedEmailsBuilder_.getMessage(index);
+      }
     }
     /**
      * <pre>
-     *list&lt;string&gt;
+     *list&lt;emildto&gt;
      * </pre>
      *
-     * <code>repeated string fetchedEmails = 1;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the fetchedEmails at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getFetchedEmailsBytes(int index) {
-      return fetchedEmails_.getByteString(index);
-    }
-    /**
-     * <pre>
-     *list&lt;string&gt;
-     * </pre>
-     *
-     * <code>repeated string fetchedEmails = 1;</code>
-     * @param index The index to set the value at.
-     * @param value The fetchedEmails to set.
-     * @return This builder for chaining.
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
      */
     public Builder setFetchedEmails(
-        int index, java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      ensureFetchedEmailsIsMutable();
-      fetchedEmails_.set(index, value);
-      bitField0_ |= 0x00000001;
-      onChanged();
+        int index, common.EmailDtoProto value) {
+      if (fetchedEmailsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureFetchedEmailsIsMutable();
+        fetchedEmails_.set(index, value);
+        onChanged();
+      } else {
+        fetchedEmailsBuilder_.setMessage(index, value);
+      }
       return this;
     }
     /**
      * <pre>
-     *list&lt;string&gt;
+     *list&lt;emildto&gt;
      * </pre>
      *
-     * <code>repeated string fetchedEmails = 1;</code>
-     * @param value The fetchedEmails to add.
-     * @return This builder for chaining.
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
+     */
+    public Builder setFetchedEmails(
+        int index, common.EmailDtoProto.Builder builderForValue) {
+      if (fetchedEmailsBuilder_ == null) {
+        ensureFetchedEmailsIsMutable();
+        fetchedEmails_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        fetchedEmailsBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     *list&lt;emildto&gt;
+     * </pre>
+     *
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
+     */
+    public Builder addFetchedEmails(common.EmailDtoProto value) {
+      if (fetchedEmailsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureFetchedEmailsIsMutable();
+        fetchedEmails_.add(value);
+        onChanged();
+      } else {
+        fetchedEmailsBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     *list&lt;emildto&gt;
+     * </pre>
+     *
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
      */
     public Builder addFetchedEmails(
-        java.lang.String value) {
-      if (value == null) { throw new NullPointerException(); }
-      ensureFetchedEmailsIsMutable();
-      fetchedEmails_.add(value);
-      bitField0_ |= 0x00000001;
-      onChanged();
+        int index, common.EmailDtoProto value) {
+      if (fetchedEmailsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureFetchedEmailsIsMutable();
+        fetchedEmails_.add(index, value);
+        onChanged();
+      } else {
+        fetchedEmailsBuilder_.addMessage(index, value);
+      }
       return this;
     }
     /**
      * <pre>
-     *list&lt;string&gt;
+     *list&lt;emildto&gt;
      * </pre>
      *
-     * <code>repeated string fetchedEmails = 1;</code>
-     * @param values The fetchedEmails to add.
-     * @return This builder for chaining.
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
+     */
+    public Builder addFetchedEmails(
+        common.EmailDtoProto.Builder builderForValue) {
+      if (fetchedEmailsBuilder_ == null) {
+        ensureFetchedEmailsIsMutable();
+        fetchedEmails_.add(builderForValue.build());
+        onChanged();
+      } else {
+        fetchedEmailsBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     *list&lt;emildto&gt;
+     * </pre>
+     *
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
+     */
+    public Builder addFetchedEmails(
+        int index, common.EmailDtoProto.Builder builderForValue) {
+      if (fetchedEmailsBuilder_ == null) {
+        ensureFetchedEmailsIsMutable();
+        fetchedEmails_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        fetchedEmailsBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     *list&lt;emildto&gt;
+     * </pre>
+     *
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
      */
     public Builder addAllFetchedEmails(
-        java.lang.Iterable<java.lang.String> values) {
-      ensureFetchedEmailsIsMutable();
-      com.google.protobuf.AbstractMessageLite.Builder.addAll(
-          values, fetchedEmails_);
-      bitField0_ |= 0x00000001;
-      onChanged();
+        java.lang.Iterable<? extends common.EmailDtoProto> values) {
+      if (fetchedEmailsBuilder_ == null) {
+        ensureFetchedEmailsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, fetchedEmails_);
+        onChanged();
+      } else {
+        fetchedEmailsBuilder_.addAllMessages(values);
+      }
       return this;
     }
     /**
      * <pre>
-     *list&lt;string&gt;
+     *list&lt;emildto&gt;
      * </pre>
      *
-     * <code>repeated string fetchedEmails = 1;</code>
-     * @return This builder for chaining.
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
      */
     public Builder clearFetchedEmails() {
-      fetchedEmails_ =
-        com.google.protobuf.LazyStringArrayList.emptyList();
-      bitField0_ = (bitField0_ & ~0x00000001);;
-      onChanged();
+      if (fetchedEmailsBuilder_ == null) {
+        fetchedEmails_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+      } else {
+        fetchedEmailsBuilder_.clear();
+      }
       return this;
     }
     /**
      * <pre>
-     *list&lt;string&gt;
+     *list&lt;emildto&gt;
      * </pre>
      *
-     * <code>repeated string fetchedEmails = 1;</code>
-     * @param value The bytes of the fetchedEmails to add.
-     * @return This builder for chaining.
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
      */
-    public Builder addFetchedEmailsBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) { throw new NullPointerException(); }
-      checkByteStringIsUtf8(value);
-      ensureFetchedEmailsIsMutable();
-      fetchedEmails_.add(value);
-      bitField0_ |= 0x00000001;
-      onChanged();
+    public Builder removeFetchedEmails(int index) {
+      if (fetchedEmailsBuilder_ == null) {
+        ensureFetchedEmailsIsMutable();
+        fetchedEmails_.remove(index);
+        onChanged();
+      } else {
+        fetchedEmailsBuilder_.remove(index);
+      }
       return this;
+    }
+    /**
+     * <pre>
+     *list&lt;emildto&gt;
+     * </pre>
+     *
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
+     */
+    public common.EmailDtoProto.Builder getFetchedEmailsBuilder(
+        int index) {
+      return getFetchedEmailsFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <pre>
+     *list&lt;emildto&gt;
+     * </pre>
+     *
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
+     */
+    public common.EmailDtoProtoOrBuilder getFetchedEmailsOrBuilder(
+        int index) {
+      if (fetchedEmailsBuilder_ == null) {
+        return fetchedEmails_.get(index);  } else {
+        return fetchedEmailsBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <pre>
+     *list&lt;emildto&gt;
+     * </pre>
+     *
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
+     */
+    public java.util.List<? extends common.EmailDtoProtoOrBuilder> 
+         getFetchedEmailsOrBuilderList() {
+      if (fetchedEmailsBuilder_ != null) {
+        return fetchedEmailsBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(fetchedEmails_);
+      }
+    }
+    /**
+     * <pre>
+     *list&lt;emildto&gt;
+     * </pre>
+     *
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
+     */
+    public common.EmailDtoProto.Builder addFetchedEmailsBuilder() {
+      return getFetchedEmailsFieldBuilder().addBuilder(
+          common.EmailDtoProto.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     *list&lt;emildto&gt;
+     * </pre>
+     *
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
+     */
+    public common.EmailDtoProto.Builder addFetchedEmailsBuilder(
+        int index) {
+      return getFetchedEmailsFieldBuilder().addBuilder(
+          index, common.EmailDtoProto.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     *list&lt;emildto&gt;
+     * </pre>
+     *
+     * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
+     */
+    public java.util.List<common.EmailDtoProto.Builder> 
+         getFetchedEmailsBuilderList() {
+      return getFetchedEmailsFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        common.EmailDtoProto, common.EmailDtoProto.Builder, common.EmailDtoProtoOrBuilder> 
+        getFetchedEmailsFieldBuilder() {
+      if (fetchedEmailsBuilder_ == null) {
+        fetchedEmailsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            common.EmailDtoProto, common.EmailDtoProto.Builder, common.EmailDtoProtoOrBuilder>(
+                fetchedEmails_,
+                ((bitField0_ & 0x00000001) != 0),
+                getParentForChildren(),
+                isClean());
+        fetchedEmails_ = null;
+      }
+      return fetchedEmailsBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

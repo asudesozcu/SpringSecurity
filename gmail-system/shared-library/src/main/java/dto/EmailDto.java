@@ -1,19 +1,19 @@
 package dto;
 import java.time.LocalDateTime;
 import java.util.List;
+import common.EmailDtoProto ;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-
 public class EmailDto {
     private String emailId;
     private String subject;
     private String sender;
     private String snippet;
     private LocalDateTime receivedAt;
-    private List<String> labels;
+    private List<String> labelIds;
     private boolean hasAttachment;
     private int sizeEstimate;
 
@@ -29,7 +29,7 @@ public class EmailDto {
                 ", sender='" + sender + '\'' +
                 ", snippet='" + snippet + '\'' +
                 ", receivedAt=" + receivedAt +
-                ", labels=" + labels +
+                ", labelIds=" + labelIds +
                 ", hasAttachment=" + hasAttachment +
                 ", sizeEstimate=" + sizeEstimate +
                 '}';
@@ -71,12 +71,12 @@ public class EmailDto {
         this.receivedAt = receivedAt;
     }
 
-    public List<String> getLabels() {
-        return labels;
+    public List<String> getLabelIds() {
+        return labelIds;
     }
 
-    public void setLabels(List<String> labels) {
-        this.labels = labels;
+    public void setLabelIds(List<String> labelIds) {
+        this.labelIds = labelIds;
     }
 
     public boolean isHasAttachment() {
@@ -101,11 +101,43 @@ public class EmailDto {
         this.sender = sender;
         this.snippet = snippet;
         this.receivedAt = receivedAt;
-        this.labels = labels;
+        this.labelIds = labels;
         this.hasAttachment = hasAttachment;
         this.sizeEstimate = sizeEstimate;
     }
 //kafka için gerekli belki
     public EmailDto() {}
 
+    public common.EmailDtoProto toProto() {
+        return common.EmailDtoProto.newBuilder()
+                .setEmailId(emailId != null ? emailId : "")
+                .setSubject(subject != null ? subject : "")
+                .setSender(sender != null ? sender : "")
+                .setSnippet(snippet != null ? snippet : "")
+                .setReceivedAt(receivedAt != null ? receivedAt.toString() : "")
+                .addAllLabels(labelIds != null ? labelIds : List.of())
+                .setHasAttachment(hasAttachment)
+                .setSizeEstimate(sizeEstimate)
+                .build();
+    }
+    public static EmailDto fromProto(EmailDtoProto proto) {
+        EmailDto dto = new EmailDto();
+
+        dto.setEmailId(proto.getEmailId());
+        dto.setSubject(proto.getSubject());
+        dto.setSender(proto.getSender());
+        dto.setSnippet(proto.getSnippet());
+
+        try {
+            dto.setReceivedAt(LocalDateTime.parse(proto.getReceivedAt()));
+        } catch (Exception e) {
+            dto.setReceivedAt(null); // veya LocalDateTime.now()
+        }
+
+        dto.setLabelIds(proto.getLabelsList());
+        dto.setHasAttachment(proto.getHasAttachment());
+        dto.setSizeEstimate(proto.getSizeEstimate());
+
+        return dto;
+    }
 }

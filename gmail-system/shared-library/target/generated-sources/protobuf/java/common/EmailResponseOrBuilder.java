@@ -10,42 +10,45 @@ public interface EmailResponseOrBuilder extends
 
   /**
    * <pre>
-   *list&lt;string&gt;
+   *list&lt;emildto&gt;
    * </pre>
    *
-   * <code>repeated string fetchedEmails = 1;</code>
-   * @return A list containing the fetchedEmails.
+   * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
    */
-  java.util.List<java.lang.String>
+  java.util.List<common.EmailDtoProto> 
       getFetchedEmailsList();
   /**
    * <pre>
-   *list&lt;string&gt;
+   *list&lt;emildto&gt;
    * </pre>
    *
-   * <code>repeated string fetchedEmails = 1;</code>
-   * @return The count of fetchedEmails.
+   * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
+   */
+  common.EmailDtoProto getFetchedEmails(int index);
+  /**
+   * <pre>
+   *list&lt;emildto&gt;
+   * </pre>
+   *
+   * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
    */
   int getFetchedEmailsCount();
   /**
    * <pre>
-   *list&lt;string&gt;
+   *list&lt;emildto&gt;
    * </pre>
    *
-   * <code>repeated string fetchedEmails = 1;</code>
-   * @param index The index of the element to return.
-   * @return The fetchedEmails at the given index.
+   * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
    */
-  java.lang.String getFetchedEmails(int index);
+  java.util.List<? extends common.EmailDtoProtoOrBuilder> 
+      getFetchedEmailsOrBuilderList();
   /**
    * <pre>
-   *list&lt;string&gt;
+   *list&lt;emildto&gt;
    * </pre>
    *
-   * <code>repeated string fetchedEmails = 1;</code>
-   * @param index The index of the value to return.
-   * @return The bytes of the fetchedEmails at the given index.
+   * <code>repeated .EmailDtoProto fetchedEmails = 1;</code>
    */
-  com.google.protobuf.ByteString
-      getFetchedEmailsBytes(int index);
+  common.EmailDtoProtoOrBuilder getFetchedEmailsOrBuilder(
+      int index);
 }

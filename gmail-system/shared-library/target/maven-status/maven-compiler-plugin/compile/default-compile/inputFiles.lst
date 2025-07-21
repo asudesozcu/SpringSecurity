@@ -2,6 +2,8 @@ C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library
 C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\src\main\java\dto\enums.java
 C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\target\generated-sources\protobuf\grpc-java\common\EmailServiceGrpc.java
 C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\target\generated-sources\protobuf\java\common\Email.java
+C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\target\generated-sources\protobuf\java\common\EmailDtoProto.java
+C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\target\generated-sources\protobuf\java\common\EmailDtoProtoOrBuilder.java
 C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\target\generated-sources\protobuf\java\common\EmailRequest.java
 C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\target\generated-sources\protobuf\java\common\EmailRequestOrBuilder.java
 C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\target\generated-sources\protobuf\java\common\EmailResponse.java

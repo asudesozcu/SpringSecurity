@@ -181,7 +181,7 @@ public class GmailService {
                             .replace("[", "").replace("]", "");
                     List<String> labels = Arrays.stream(labelsStr.split(","))
                             .map(String::trim).filter(s -> !s.isEmpty()).collect(Collectors.toList());
-                    event.setLabels(labels);
+                    event.setLabelIds(labels);
 
                 } else if (part.startsWith("From:")) {
                     event.setSender(part.replace("From:", "").trim());
