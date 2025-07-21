@@ -2,6 +2,7 @@ package com.gmail.system.controller;
 
 import com.gmail.system.service.FeignEmailClient;
 import com.gmail.system.service.GrpcEmailClient;
+import com.gmail.system.service.KafkaEmailService;
 import dto.EmailDto;
 
 import dto.enums.CommunicationProtocol;
@@ -20,12 +21,12 @@ public class EmailGraphQLController {
 
     private final FeignEmailClient feignEmailClient;
     private final GrpcEmailClient grpcEmailClient;
-//    private final KafkaEmailService kafkaEmailService;
+    private final KafkaEmailService kafkaEmailService ;
 
-    public EmailGraphQLController(FeignEmailClient feignEmailClient, GrpcEmailClient grpcEmailClient) {
+    public EmailGraphQLController(FeignEmailClient feignEmailClient, GrpcEmailClient grpcEmailClient, KafkaEmailService kafkaEmailService) {
         this.feignEmailClient = feignEmailClient;
         this.grpcEmailClient = grpcEmailClient;
-   //     this.kafkaEmailService = kafkaEmailService;
+       this.kafkaEmailService = kafkaEmailService;
     }
 
 
@@ -70,9 +71,12 @@ public class EmailGraphQLController {
                 }
 
             case KAFKA:
-                // return kafkaEmailService.fetchEmails();
-                throw new UnsupportedOperationException("Kafka not implemented");
+                try {
+                    return kafkaEmailService.fetchEmails();
+                }catch (Exception ex) {
+                    throw new UnsupportedOperationException("Kafka not implemented");
 
+                }
             default:
                 throw new IllegalArgumentException("Invalid protocol");
         }

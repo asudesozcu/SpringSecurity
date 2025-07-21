@@ -1,20 +1,42 @@
 package kafka.service;
 
+import kafka.EmailEntity;
+import kafka.repo.EmailMapper;
+import kafka.repo.EmailRepository;
 import org.springframework.kafka.annotation.KafkaListener;
 import dto.EmailDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailConsumerService {
+    private final EmailRepository emailRepository;
+
+    public EmailConsumerService(EmailRepository emailRepository) {
+        this.emailRepository = emailRepository;
+    }
+
     @KafkaListener(
             topics = "email-events",
             groupId = "${spring.kafka.consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory"
-    )    public void consume(EmailDto event) {
+    )
+    public void consume(EmailDto event) {
         System.out.println("Event received: " + event.getSubject());
         System.out.println(" From: " + event.getSender());
+        // DTO → Entity dönüşümü
+        EmailEntity entity = EmailMapper.fromDtotoEntity(event);
 
-sendFeedback(event);
+        // MongoDB'ye kayıt
+
+        try {
+            emailRepository.save(entity);
+            System.out.println("✅ Veri MongoDB’ye kaydedildi.");
+        } catch (Exception e) {
+            System.out.println("❌ MongoDB’ye veri yazılamadı:");
+            e.printStackTrace();
+        }
+
+        sendFeedback(event);
 
     }
 
