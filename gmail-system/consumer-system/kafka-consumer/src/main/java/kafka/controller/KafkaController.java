@@ -17,17 +17,20 @@ import java.util.stream.Collectors;
 public class KafkaController {
 
     private final EmailRepository emailRepository;
+    private final EmailConsumerService emailConsumerService;
 
-    public KafkaController( EmailRepository emailRepository) {
+    public KafkaController(EmailRepository emailRepository, EmailConsumerService emailConsumerService) {
         this.emailRepository = emailRepository;
+        this.emailConsumerService = emailConsumerService;
     }
 
 
     @GetMapping("fetch-emails")
     public List<EmailDto> getAllEmails() {
-        return emailRepository.findAll().stream()
-                .map(EmailMapper::fromEntitytoDto)
-                .collect(Collectors.toList());
+        System.out.println("size:"+ emailRepository.findTop10ByOrderByReceivedAtDesc().size());
+       // return emailRepository.findTop10ByOrderByReceivedAtDesc().stream().map(EmailMapper::fromEntitytoDto).collect(Collectors.toList());
+return emailConsumerService.getReceivedEmails();
+
     }
 }
 

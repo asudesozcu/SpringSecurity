@@ -7,12 +7,22 @@ import org.springframework.kafka.annotation.KafkaListener;
 import dto.EmailDto;
 import org.springframework.stereotype.Service;
 
+import java.util.Deque;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 @Service
 public class EmailConsumerService {
     private final EmailRepository emailRepository;
+    private final List<EmailDto> receivedEmails = new CopyOnWriteArrayList<>();
 
     public EmailConsumerService(EmailRepository emailRepository) {
         this.emailRepository = emailRepository;
+    }
+
+    public List<EmailDto> getReceivedEmails() {
+        return receivedEmails;
     }
 
     @KafkaListener(
@@ -20,19 +30,20 @@ public class EmailConsumerService {
             groupId = "${spring.kafka.consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory"
     )
+
     public void consume(EmailDto event) {
         System.out.println("Event received: " + event.getSubject());
         System.out.println(" From: " + event.getSender());
         // DTO → Entity dönüşümü
         EmailEntity entity = EmailMapper.fromDtotoEntity(event);
-
+        receivedEmails.add(event);
         // MongoDB'ye kayıt
 
         try {
             emailRepository.save(entity);
-            System.out.println("✅ Veri MongoDB’ye kaydedildi.");
+            System.out.println(" dbye kaydedildi.");
         } catch (Exception e) {
-            System.out.println("❌ MongoDB’ye veri yazılamadı:");
+            System.out.println("dbye yazılamadı:");
             e.printStackTrace();
         }
 

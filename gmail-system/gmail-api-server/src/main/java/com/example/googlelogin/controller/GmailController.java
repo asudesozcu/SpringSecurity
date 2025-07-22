@@ -79,6 +79,7 @@ public class GmailController {
                     List<EmailDto> dtoList = rawList.stream()
                             .map(gmailService::parseEmailString)
                             .collect(Collectors.toList());
+                    System.out.println("size1: "+dtoList.size());
                     return ResponseEntity.ok(dtoList);
                 })
                 .onErrorResume(WebClientRequestException.class, e -> {
@@ -88,40 +89,29 @@ public class GmailController {
     }
 
     @GetMapping("/emails/publish")
-    public Mono<ResponseEntity<List<String>>> getandpublishEmails(HttpServletRequest request) {
+    public Mono<ResponseEntity<List<EmailDto>>> getandpublishEmails(HttpServletRequest request) {
         String email = (String) request.getSession().getAttribute("email");
         if (email == null) {
             return Mono.error(new RuntimeException("Kullanıcı oturumu bulunamadı."));
         }
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Veritabanında kullanıcı bulunamadı"));
 
-        Instant now = Instant.now();
-        Instant last = lastRequestTime.get(email);
+        return gmailService.fetchLatestMails(user, clientId, clientSecret)
+                .map(rawList -> {
 
-        if (last != null && now.isBefore(last.plusSeconds(RATE_LIMIT_SECONDS))) {
-            System.out.println("delayed");
-            return Mono.delay(Duration.ofSeconds(5))
-                    .then(gmailService.fetchLatestMails(user, clientId, clientSecret))
-                    .map(ResponseEntity::ok);
-        }
+                    List<EmailDto> dtoList = rawList.stream()
+                            .map(gmailService::parseEmailString)
+                            .collect(Collectors.toList());
 
-        lastRequestTime.put(email, now);
-        Mono<List<String>> fetchedMails = gmailService.fetchLatestMails(user, clientId, clientSecret);
+                    dtoList.forEach(kafkaProducerService::publish);
+                    System.out.println("size2: "+ dtoList.size());
 
-        return fetchedMails
-                .doOnNext(list -> {
-                    list.forEach(raw -> {
-                        EmailDto event = gmailService.parseEmailString(raw);
-                        kafkaProducerService.publish(event);
-                    });
-                })
-                .map(ResponseEntity::ok)
-                .onErrorResume(WebClientRequestException.class, e -> {
-                    System.err.println("WebClient error: " + e.getMessage());
-                    return Mono.error(e);
+                    return ResponseEntity.ok(dtoList);
                 });
     }
+
 
     @GetMapping("/oauth2/callback")
     public ResponseEntity<String> handleGoogleCallback(@RequestParam("code") String code, HttpServletRequest request) {
