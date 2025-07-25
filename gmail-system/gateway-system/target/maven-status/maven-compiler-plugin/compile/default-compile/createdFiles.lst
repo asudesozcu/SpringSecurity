@@ -1,0 +1,3 @@
+com\gmail\system\config\GatewayConfig.class
+com\gmail\system\GatewayApplication.class
+com\gmail\system\grpc\GatewayGrpcService.class
