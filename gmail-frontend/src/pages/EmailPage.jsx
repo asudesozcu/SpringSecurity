@@ -12,16 +12,13 @@ const GRAPHQL_FIELDS = [
     "labelIds", "hasAttachment", "sizeEstimate"
 ];
 
-
-
 export default function EmailPage() {
     const [protocol, setProtocol] = useState("FEIGN");
-    const [selectedCategories, setSelectedCategories] = useState([
-        { name: "emailId", key: "emailId" },
-        { name: "subject", key: "subject" }
-    ]);
+    // 🔧 Başlangıçta GraphQL alanları boş -> buton disabled, otomatik fetch yok
+    const [selectedCategories, setSelectedCategories] = useState([]);
     const [emails, setEmails] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [showTable, setShowTable] = useState(false);
     const toast = useRef(null);
 
     const isGraphQL = useMemo(() => protocol === "GRAPHQL", [protocol]);
@@ -38,25 +35,51 @@ export default function EmailPage() {
 
     const categories = GRAPHQL_FIELDS.map((f) => ({ name: f, key: f }));
 
+    // GraphQL cevabını diziye normalize et
+    const normalizeList = (json) => {
+        if (Array.isArray(json)) return json;
+        return (
+            json?.emails ??
+            json?.getEmails ??
+            json?.data?.emails ??
+            json?.data?.getEmails ??
+            []
+        );
+    };
+
+    // Feign/gRPC için tüm alanları otomatik çıkar, GraphQL için seçili alanları kullan
+    const allColumnsFromData = useMemo(() => {
+        if (isGraphQL) return selectedFieldList;
+        if (emails?.length > 0 && typeof emails[0] === "object") {
+            return Object.keys(emails[0]);
+        }
+        return ["emailId", "subject", "sender"];
+    }, [isGraphQL, selectedFieldList, emails]);
+
     const handleFetch = async () => {
         setLoading(true);
-        setEmails([]);
+        setShowTable(false); // butona basınca tabloyu gizle
+        setEmails([]);       // önceki veriyi temizle
+
         try {
-            let res;
+            let res = [];
             if (isGraphQL) {
                 if (!selectedCategories.length) {
-                    toast.current.show({ severity: "warn", summary: "Uyarı", detail: "En az bir alan seçmelisiniz." });
+                    toast.current?.show({ severity: "warn", summary: "Uyarı", detail: "En az bir alan seçmelisiniz." });
                     return;
                 }
-                res = await fetchGraphqlEmails(selectedFieldList.join(","));
+                const json = await fetchGraphqlEmails(selectedFieldList.join(","));
+                res = normalizeList(json);
             } else if (protocol === "FEIGN") {
-                res = await fetchEmailsWithFeign();
+                res = await fetchEmailsWithFeign(); // tüm veri
             } else if (protocol === "GRPC") {
-                res = await fetchEmailsWithGrpc();
+                res = await fetchEmailsWithGrpc();  // tüm veri
             }
-            setEmails(res);
+
+            setEmails(res || []);
+            setShowTable((res?.length || 0) > 0); // veri geldiyse tabloyu aç
         } catch (err) {
-            toast.current.show({ severity: "error", summary: "Hata", detail: err.message || "Bir hata oluştu." });
+            toast.current?.show({ severity: "error", summary: "Hata", detail: err.message || "Bir hata oluştu." });
         } finally {
             setLoading(false);
         }
@@ -73,7 +96,11 @@ export default function EmailPage() {
                     id="protocol"
                     value={protocol}
                     options={protocolOptions}
-                    onChange={(e) => setProtocol(e.value)}
+                    onChange={(e) => {
+                        setProtocol(e.value);
+                        setShowTable(false); // protokol değişince tabloyu kapat
+                        setEmails([]);
+                    }}
                     placeholder="Protokol seçiniz"
                     className="w-full md:w-20rem"
                 />
@@ -108,11 +135,13 @@ export default function EmailPage() {
                 />
             </div>
 
-            {/* Email Listesi */}
-            <EmailList
-                emails={emails}
-                columns={isGraphQL ? selectedFieldList : ["emailId", "subject", "sender"]}
-            />
+            {/* Email Listesi: sadece butona basınca göster */}
+            {showTable && (
+                <EmailList
+                    emails={emails}
+                    columns={allColumnsFromData} // GraphQL: seçili alanlar | FEIGN/GRPC: tüm alanlar
+                />
+            )}
         </Card>
     );
 }

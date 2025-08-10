@@ -8,6 +8,7 @@ export async function fetchEmailsWithFeign() {
 
 }
 
+
 export async function fetchEmailsWithGrpc() {
     const token = localStorage.getItem('access_token');
     return fetch('http://localhost:8085/fetch-mails', {
@@ -32,5 +33,5 @@ export async function fetchGraphqlEmails(fields = 'id,subject') {
     return fetch(`http://localhost:8085/graphql-emails?fields=${encodeURIComponent(fields)}`, {
         method: 'GET',
         credentials: 'include',
-    }).then(res => res.json());
+    }).then(res => res.json())
 }
