@@ -12,7 +12,10 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class KafkaRequestProducer  {
@@ -35,9 +38,13 @@ public class KafkaRequestProducer  {
     }
 
 
-    @KafkaListener(topics = "response-topic", groupId = "client-group",containerFactory = "emailKafkaListenerContainerFactory")
-    public void consumeResponse(@Payload List<EmailDto> emails,
-                                @Header(KafkaHeaders.RECEIVED_KEY) String correlationId) {
-        System.out.println("Response for correlationId " + correlationId + ": " + emails);
-    }
+//    @KafkaListener(topics = "response-topic", groupId = "client-group",containerFactory = "emailKafkaListenerContainerFactory")
+//    public void consumeResponse(@Payload List<EmailDto> emails,
+//                                @Header(KafkaHeaders.RECEIVED_KEY) String correlationId) {
+//
+//      //  System.out.println("Response for correlationId " + correlationId + ": " + emails);
+//
+//
+//
+//    }
 }

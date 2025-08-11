@@ -9,21 +9,35 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
 
 @Service
 public class KafkaConsumeService {
+    public static  Map<String, List<EmailDto>> byCorrelation = new ConcurrentHashMap<>();
 
+    public List<EmailDto> getByCorrelationId(String correlationId) {
+        return byCorrelation.getOrDefault(correlationId, Collections.emptyList());
+    }
+
+    public void add(String correlationId, List<EmailDto> emails) {
+        if (emails == null || emails.isEmpty()) return;
+        byCorrelation
+                .computeIfAbsent(correlationId, k -> new CopyOnWriteArrayList<>())
+                .addAll(emails);
+    }
     @KafkaListener(
             topics = "response-topic",
             groupId = "client-group"
-
     )
     public void consumeResponse(@Payload List<EmailDto> emails,
                                 @Header(KafkaHeaders.RECEIVED_KEY) String key) {
+        add(key, emails);
         System.out.println("Response for correlationId " + key + ": " + emails);
     }
 
