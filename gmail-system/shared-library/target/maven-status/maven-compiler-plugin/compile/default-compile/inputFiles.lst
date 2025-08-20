@@ -1,5 +1,6 @@
-C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\src\main\java\dto\EmailDto.java
-C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\src\main\java\dto\enums.java
+C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\src\main\java\com\gmailsystem\dto\EmailDto.java
+C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\src\main\java\com\gmailsystem\logging\AopConfig.java
+C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\src\main\java\com\gmailsystem\logging\LoggingAspect.java
 C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\target\generated-sources\protobuf\grpc-java\common\EmailServiceGrpc.java
 C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\target\generated-sources\protobuf\java\common\Email.java
 C:\Users\sozcu\Documents\IdeaProjects\SpringSecurity\gmail-system\shared-library\target\generated-sources\protobuf\java\common\EmailDtoProto.java

@@ -26,7 +26,7 @@ public class KafkaRequestProducer  {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendRequest(String accessToken) {
+    public Map<String,String> sendRequest(String accessToken) {
         String correlationId = UUID.randomUUID().toString();
 
         ProducerRecord<String, String> record = new ProducerRecord<>("request-topic", correlationId, "REQUEST");
@@ -34,7 +34,7 @@ public class KafkaRequestProducer  {
 
         kafkaTemplate.send(record);
 
-        System.out.println(" Request sent to Kafka with correlationId: " + correlationId);
+        return Map.of("correlationId", correlationId);
     }
 
 

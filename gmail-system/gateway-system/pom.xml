@@ -42,6 +42,11 @@
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty-shaded</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.22</version> <!-- Spring Boot 3.5.x için uygun -->
+        </dependency>
 
         <!-- Core gRPC Libraries -->
         <dependency>
@@ -56,8 +61,6 @@
 
 
 
-
-
         <!-- gRPC Client -->
         <dependency>
             <groupId>net.devh</groupId>
@@ -68,9 +71,6 @@
 
 
 
-
-
-        <!-- Ortak proto'ları içeriyorsa -->
         <dependency>
             <groupId>com.gmail.system</groupId>
             <artifactId>shared-library</artifactId>

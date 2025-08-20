@@ -16,10 +16,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
-
 @Service
 public class KafkaConsumeService {
-    public static  Map<String, List<EmailDto>> byCorrelation = new ConcurrentHashMap<>();
+    public static Map<String, List<EmailDto>> byCorrelation = new ConcurrentHashMap<>();
 
     public List<EmailDto> getByCorrelationId(String correlationId) {
         return byCorrelation.getOrDefault(correlationId, Collections.emptyList());
@@ -31,6 +30,9 @@ public class KafkaConsumeService {
                 .computeIfAbsent(correlationId, k -> new CopyOnWriteArrayList<>())
                 .addAll(emails);
     }
+
+    public void clear(String id) { byCorrelation.remove(id); }
+
     @KafkaListener(
             topics = "response-topic",
             groupId = "client-group"

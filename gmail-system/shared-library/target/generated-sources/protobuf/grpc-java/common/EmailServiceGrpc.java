@@ -5,14 +5,14 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.61.0)",
+    value = "by gRPC proto compiler (version 1.45.1)",
     comments = "Source: email.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class EmailServiceGrpc {
 
   private EmailServiceGrpc() {}
 
-  public static final java.lang.String SERVICE_NAME = "EmailService";
+  public static final String SERVICE_NAME = "EmailService";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<common.EmailRequest,
@@ -92,32 +92,31 @@ public final class EmailServiceGrpc {
 
   /**
    */
-  public interface AsyncService {
+  public static abstract class EmailServiceImplBase implements io.grpc.BindableService {
 
     /**
      */
-    default void fetchLatestEmails(common.EmailRequest request,
+    public void fetchLatestEmails(common.EmailRequest request,
         io.grpc.stub.StreamObserver<common.EmailResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getFetchLatestEmailsMethod(), responseObserver);
     }
-  }
-
-  /**
-   * Base class for the server implementation of the service EmailService.
-   */
-  public static abstract class EmailServiceImplBase
-      implements io.grpc.BindableService, AsyncService {
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
-      return EmailServiceGrpc.bindService(this);
+      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+          .addMethod(
+            getFetchLatestEmailsMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                common.EmailRequest,
+                common.EmailResponse>(
+                  this, METHODID_FETCH_LATEST_EMAILS)))
+          .build();
     }
   }
 
   /**
-   * A stub to allow clients to do asynchronous rpc calls to service EmailService.
    */
-  public static final class EmailServiceStub
-      extends io.grpc.stub.AbstractAsyncStub<EmailServiceStub> {
+  public static final class EmailServiceStub extends io.grpc.stub.AbstractAsyncStub<EmailServiceStub> {
     private EmailServiceStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -139,10 +138,8 @@ public final class EmailServiceGrpc {
   }
 
   /**
-   * A stub to allow clients to do synchronous rpc calls to service EmailService.
    */
-  public static final class EmailServiceBlockingStub
-      extends io.grpc.stub.AbstractBlockingStub<EmailServiceBlockingStub> {
+  public static final class EmailServiceBlockingStub extends io.grpc.stub.AbstractBlockingStub<EmailServiceBlockingStub> {
     private EmailServiceBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -163,10 +160,8 @@ public final class EmailServiceGrpc {
   }
 
   /**
-   * A stub to allow clients to do ListenableFuture-style rpc calls to service EmailService.
    */
-  public static final class EmailServiceFutureStub
-      extends io.grpc.stub.AbstractFutureStub<EmailServiceFutureStub> {
+  public static final class EmailServiceFutureStub extends io.grpc.stub.AbstractFutureStub<EmailServiceFutureStub> {
     private EmailServiceFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -194,10 +189,10 @@ public final class EmailServiceGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final AsyncService serviceImpl;
+    private final EmailServiceImplBase serviceImpl;
     private final int methodId;
 
-    MethodHandlers(AsyncService serviceImpl, int methodId) {
+    MethodHandlers(EmailServiceImplBase serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
@@ -226,18 +221,6 @@ public final class EmailServiceGrpc {
     }
   }
 
-  public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
-    return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-        .addMethod(
-          getFetchLatestEmailsMethod(),
-          io.grpc.stub.ServerCalls.asyncUnaryCall(
-            new MethodHandlers<
-              common.EmailRequest,
-              common.EmailResponse>(
-                service, METHODID_FETCH_LATEST_EMAILS)))
-        .build();
-  }
-
   private static abstract class EmailServiceBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoFileDescriptorSupplier, io.grpc.protobuf.ProtoServiceDescriptorSupplier {
     EmailServiceBaseDescriptorSupplier() {}
@@ -261,9 +244,9 @@ public final class EmailServiceGrpc {
   private static final class EmailServiceMethodDescriptorSupplier
       extends EmailServiceBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
-    private final java.lang.String methodName;
+    private final String methodName;
 
-    EmailServiceMethodDescriptorSupplier(java.lang.String methodName) {
+    EmailServiceMethodDescriptorSupplier(String methodName) {
       this.methodName = methodName;
     }
 
